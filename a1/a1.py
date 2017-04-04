@@ -13,7 +13,7 @@ def mystery_code(string, offset=0):
     output = []
     for c in string:
         if str.isalpha(c):
-            output.append(chr(translate(c, offset)))
+            output.append(chr(translate(c, offset % 26 if offset >= 0 else offset % -26)))
         else:
             output.append(c)
     print(''.join(output))
@@ -21,10 +21,10 @@ def mystery_code(string, offset=0):
 def translate(c, offset):
     if str.isupper(c):
         new = 97 + ord(c) - 65 + offset - 2 #2 = fudge factor
-        return new if new <= 122 else 97 + new - 123
+        return new if new <= 122 and new >= 97 else 97 + new - 123 if new > 122 else 123 - 97 + new
     elif str.islower(c):
         new = 65 + ord(c) - 97 + offset - 2 #2 = fudge factor
-        return new if new <= 90 else 65 + new - 91
+        return new if new <= 90 and new >= 65 else 65 + new - 91 if new > 90 else 91 - 65 + new
 
 def quintuples(l):
     output = [l[i:i + 5] for i in range(0, len(l), 5)]

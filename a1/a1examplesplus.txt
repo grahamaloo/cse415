@@ -1,0 +1,27 @@
+>>> four_x_cubed_plus_one(2)
+33
+>>> four_x_cubed_plus_one(1)
+5
+>>> four_x_cubed_plus_one(5)
+501
+
+>>> mystery_code('abc Iz th1s Secure? n0, no, 9!', 17)
+PQR xO IW1H hTRJGT? C0, CD, 9!
+>>> mystery_code('abc Iz th1s Secure? n0, no, 9!', -4)
+UVW cT NB1M mYWOLY? H0, HI, 9!
+>>> mystery_code('abc Iz th1s Secure? n0, no, 9!', 30)
+CDE kB VJ1U uGEWTG? P0, PQ, 9!
+
+>>> quintuples([2, 5, 1.5, 100, 3, 8, 7, 1, 1, 0, -2, -5])
+[[2, 5, 1.5, 100, 3], [8, 7, 1, 1, 0], [-2, -5]]
+>>> quintuples([2, 5, 1.5, 100])
+[[2, 5, 1.5, 100]]
+>>> quintuples([2, 5, 1.5, 100, 3, 8, 7, 1, 1, 0, -2, -5, 4, 5, 6])
+[[2, 5, 1.5, 100, 3], [8, 7, 1, 1, 0], [-2, -5, 4, 5, 6]]
+
+>>> past_tense(['program', 'debug', 'execute', 'crash', 'repeat', 'eat'])
+['programmed', 'debugged', 'executed', 'crashed', 'repeated', 'ate']
+>>> past_tense(['say', 'sleep', 'wave', 'wink', 'stop'])
+['sayed', 'sleeped', 'waved', 'winked', 'stopped']
+>>> past_tense(['fly', 'spy', 'pry', 'cry', 'try', 'ply', ])
+['flied', 'spied', 'pried', 'cried', 'tried', 'plied']
