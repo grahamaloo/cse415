@@ -14,7 +14,7 @@ THEM AUTOMATICALLY.
 ***
 '''
 
-from re import *   # Loads the regular expression module.
+from re import *  # Loads the regular expression module.
 import os.path
 from random import choice
 from difflib import SequenceMatcher
@@ -69,16 +69,25 @@ class NoCharacterException(Exception):
     pass
 
 class CrazyJoe(object):
+    '''the conversational agent itself.'''
     db_name = 'seinfeld.db'
     db_loc = 'https://noswap.com/pub/seinfeld.db'
     agent_name = 'Crazy Joe'
 
     def __init__(self):
-        self.fave_ep = None
-        self.fave_char = None
-        self.prev_quote = None
-        self.no_response_count = 0
-        self.context_count = 0
+        '''initiializes the module, also checks if some required dependencies are installed.'''
+        
+        self.fave_ep = None #facilitates a memory feature
+        self.fave_char = None #facilitates a memory feature
+        self.prev_quote = None #facilitates a memory feature
+        self.no_response_count = 0 #facilitates a cycle
+        self.context_count = 0 #facilitates a cycle
+        self.chars = ['jerry', 'elaine', 'george', 'kramer', 'leo', 'newman', 'maestro', 'puddy', 'peterman',]
+        self.def_subjects = ['keys', 'tips', 'tipping', 'kavorka', 'tv', 'parents', 'sex', 'comedy', 'nothing',]
+        self.new_subjects = [] #facilitates a memory feature
+        self.jerry = False #facilitates a memory feature
+        self.larry = False #facilitates a memory feature
+        
         try:
             from seinfeld import Seinfeld
         except ImportError:
@@ -95,11 +104,7 @@ class CrazyJoe(object):
         
         self.seinfeld = Seinfeld(self.db_name)
         self.eps = {v.title.lower() : k for k, v in self.seinfeld.episode().items()}
-        self.chars = ['jerry', 'elaine', 'george', 'kramer', 'leo', 'newman', 'maestro', 'puddy', 'peterman',]
-        self.def_subjects = ['keys', 'tips', 'tipping', 'kavorka', 'tv', 'parents', 'sex', 'comedy', 'nothing',]
-        self.new_subjects = []
-        self.jerry = False
-        self.larry = False
+        
 
     @classmethod
     def kmp(self, text, pattern):
@@ -124,6 +129,7 @@ class CrazyJoe(object):
         return -1
     
     def introduce(self):
+        '''returns basic description of the conversational agent.'''
         return '''Good evening ladies and gentlemen, how are you doing tonight?
 Good? Good. I'm Crazy Joe Devola, I used to write for acclaimed sitcom 'Seinfeld.' 
 I have a hard time differentiating between myself and my characters so WATCH OUT.
@@ -135,7 +141,8 @@ You can read my manual too if you need direction. (type 'help')'''
 
     def respond(self, the_input):
         '''Returns a response based on the passed input.'''
-        if not the_input.strip(): # rule 0, respond to no input
+        # rule 0, respond to no input (cycle)
+        if not the_input.strip(): 
             self.prev_quote = None
             if self.no_response_count >= len(no_response):
                 self.no_response_count = 0
@@ -155,31 +162,38 @@ You can read my manual too if you need direction. (type 'help')'''
 
     def make_response(self, wordlist, sub_wordlist):
         '''generates a response to the passed wordlist based on several rules'''
-        if wordlist[0] == 'help': #rule 1: HELP ME!
+        #rule 1: HELP ME!
+        if wordlist[0] == 'help':
             self.prev_quote = None
             return '\n\t'.join(commands)
         
-        if wordlist[0] == 'random': #rule 2: random quote.
+        #rule 2: random quote.
+        if wordlist[0] == 'random':
             return self._get_random_quote()
         
-        if wordlist == ['i', 'am', 'the', 'master', 'of', 'my', 'domain']: # rule 11: master of my domain
+        # rule 11: master of my domain
+        if wordlist == ['i', 'am', 'the', 'master', 'of', 'my', 'domain']:
             self.fave_ep = self.seinfeld.episode(id=self.eps['the contest'])
             return self._get_good_quote(episode=self.fave_ep)
         
+        #rule 13/14: learn about jerry or larry
         if wordlist[0:2] == ['who', 'is']:
             self.prev_quote = None
-            if wordlist[2:4] == ['jerry', 'seinfeld']: #rule 13: learn about jerry seinfeld
+            # jerry
+            if wordlist[2:4] == ['jerry', 'seinfeld']:
                 if not self.jerry:
                     return 'Jerome Allen "Jerry" Seinfeld (born April 29, 1954) is an American comedian, actor, writer, producer, and director. He is known for playing a semifictional version of himself in the sitcom Seinfeld, which he created and wrote with Larry David. Seinfeld was heavily involved in the Bee Movie, in which he voiced its protagonist. In 2010, he premiered a reality series called The Marriage Ref. He directed Colin Quinn in the Broadway show Long Story Short at the Helen Hayes Theater, which ran until January 2011. He is the creator and host of the web series Comedians in Cars Getting Coffee. In his stand-up comedy career, Seinfeld is known for specializing in observational comedy, often ranting about relationships and embarrassing social situations.'
                 else:
                     return 'I already told you about him!'
-            if wordlist[2:4] == ['larry', 'david']: #rule 14: learn about larry david
+            # larry
+            if wordlist[2:4] == ['larry', 'david']:
                 if not self.larry:
                     return 'Lawrence Gene "Larry" David (born July 2, 1947) is an American comedian, writer, actor, playwright, and television producer. He and Jerry Seinfeld created the television series Seinfeld, where he served as its head writer and executive producer from 1989 to 1996. David has subsequently gained further recognition for the HBO series Curb Your Enthusiasm, which he also created, in which he stars as a semi-fictionalized version of himself. He is worth an estimated $900 million US dollars. David\'s work won him a Primetime Emmy Award for Outstanding Comedy Series in 1993. Formerly a stand-up comedian, David went into television comedy, writing and starring in ABC\'s Fridays, as well as writing briefly for Saturday Night Live. He has won two Primetime Emmy Awards, and was voted by fellow comedians and comedy insiders as the 23rd greatest comedy star ever in a 2004 British poll to select "The Comedian\'s Comedian."'
                 else:
                     return 'I already told you about him!'
 
-        if 'opera' in sub_wordlist: #rule 6: opera house
+        #rule 6: opera house
+        if 'opera' in sub_wordlist:
             self.fave_char = self.seinfeld.speaker(name='Devola')
             self.fave_ep = self.seinfeld.episode(id=self.eps['the opera'])
             lines = ['You have entered the opera house and unleashed my true persona: Crazy Joe Devola.',
@@ -187,12 +201,15 @@ You can read my manual too if you need direction. (type 'help')'''
             lines.append(self._get_good_quote())
             return '\n'.join(lines)
         
-        if self.kmp(wordlist, ['from', 'my', 'favorite', 'episode']) >= 0: #rule 12: quote from favorite episode
+        #rule 12: quote from favorite episode (memory feature)
+        if self.kmp(wordlist, ['from', 'my', 'favorite', 'episode']) >= 0:
             if self.fave_ep:
                 return self._get_good_quote(episode=self.fave_ep)
         
+        #rule 3/4: set favorites
         if self.kmp(wordlist, ['my', 'favorite']) >= 0:
-            if 'episode' in sub_wordlist: #rule 3: set fave ep
+            # favorite episode
+            if 'episode' in sub_wordlist:
                 try:
                     try:
                         e_loc = wordlist.index('episode')
@@ -209,14 +226,14 @@ You can read my manual too if you need direction. (type 'help')'''
                         if not self.fave_ep:
                             raise NoEpisodeException
                 except (IndexError, NoEpisodeException):
-                    return '\n'.join(['I can\'t seem to figure out what episode you meant.', 
-                                    # 'This is what I got: "' + ep_name + '."',
+                    return '\n'.join(['I can\'t seem to figure out what episode you meant.',
                                     self._get_random_quote(subject='stupid'),])
                 else:
                     return ' '.join(['Oh yeah,', self.fave_ep.title, 'is a great episode.', 'Here\'s a quote:', 
                                     self._get_good_quote()
                                     ])
-            if 'character' in sub_wordlist: #rule 4: set fave character 
+            # favorite character 
+            if 'character' in sub_wordlist:
                 try:
                     try:
                         c_loc = wordlist.index('character')
@@ -234,13 +251,13 @@ You can read my manual too if you need direction. (type 'help')'''
                             raise NoCharacterException
                 except (IndexError, NoCharacterException):
                     return '\n'.join(['I can\'t seem to figure out what character you meant.', 
-                                    # 'This is what I got: "' + ep_name + '."',
                                     self._get_random_quote(subject='character'),])
                 else:
                     return ' '.join(['Oh yeah,', self.fave_char.name, 'is funny.', 'Here\'s a quote: \n', 
                                     self._get_good_quote()
                                     ])
-        if self.kmp(wordlist, ['add', 'subject']) >= 0: # rule 8: add subject
+        # rule 8: add subject (memory feature)
+        if self.kmp(wordlist, ['add', 'subject']) >= 0:
             self.prev_quote = None
             try:
                 subject = wordlist[wordlist.index('subject') + 1]
@@ -249,7 +266,8 @@ You can read my manual too if you need direction. (type 'help')'''
             except (IndexError, ValueError):
                 return 'Unable to remember that one...'
         
-        if self.kmp(wordlist, ['show', r'\w*', 'subjects']) >= 0 or self.kmp(wordlist, ['show', 'subjects']) >= 0: # rule 9: show subjects
+        # rule 9: show subjects (memory feature)
+        if self.kmp(wordlist, ['show', r'\w*', 'subjects']) >= 0 or self.kmp(wordlist, ['show', 'subjects']) >= 0:
             self.prev_quote = None
             index = max(self.kmp(wordlist, ['show', r'\w*', 'subjects']), self.kmp(wordlist, ['show', 'subjects']))
             try:
@@ -263,15 +281,17 @@ You can read my manual too if you need direction. (type 'help')'''
                     return 'I\'m not quite sure what subjects you want.' 
             except (IndexError, ValueError):
                 return 'I\'m not quite sure what subjects you want.'
-                
-        if self.kmp(wordlist, ['show', 'preferences']) >= 0: # rule 10: show current user prefs.
+        
+        # rule 10: show current user prefs. (memory feature)        
+        if self.kmp(wordlist, ['show', 'preferences']) >= 0:
             self.prev_quote = None
             lines = ['Here are the preferences I know:',
                      'Favorite character: ' + (self.fave_char.name if self.fave_char else 'NONE'),
                      'Favorite episode: ' + (self.fave_ep.title if self.fave_ep else 'NONE')]
             return '\n\t'.join(lines)
         
-        if self.prev_quote and 'context' in sub_wordlist or self.kmp(wordlist, ['i', 'don\'t', 'understand']) >= 0: #rule 5 give context with cycle
+        #rule 5 give context (cycle feature)
+        if self.prev_quote and 'context' in sub_wordlist or self.kmp(wordlist, ['i', 'don\'t', 'understand']) >= 0:
             if self.context_count < 5: #CYCLE
                 p = self.seinfeld.passage(self.prev_quote, length=self.context_count * 3 + 8)
                 lines = ['Perhaps this will help:']
@@ -283,7 +303,8 @@ You can read my manual too if you need direction. (type 'help')'''
                 self.context_count = 0
                 return 'Seems like you\'re just not going to understand this one...\n' + self._get_random_quote(subject='understand')
         
-        if self.kmp(wordlist, ['remove', 'preferences']) >= 0: #rule 7: remove preferences
+        #rule 7: remove preferences (forgetful feature)
+        if self.kmp(wordlist, ['remove', 'preferences']) >= 0:
             self.fave_char = None
             self.fave_ep = None
             self.prev_quote = None
@@ -297,7 +318,7 @@ You can read my manual too if you need direction. (type 'help')'''
 
     def _get_good_quote(self, subject=None, episode=None):
         '''returns a good quote, spoken by the favorite character (if set) 
-        from the passed ep (if set) and on the passed subject (if set)'''
+        from the passed ep (if set / priority) and on the passed subject (if set)'''
         q = None
         qtext = ''
         while len(split(' ', qtext)) < 8:

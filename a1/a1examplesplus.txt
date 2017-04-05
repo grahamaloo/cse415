@@ -1,3 +1,7 @@
+Graham Kelly
+CSE 415: Assignment 1: Part A
+4/5/2017
+
 >>> four_x_cubed_plus_one(2)
 33
 >>> four_x_cubed_plus_one(1)
