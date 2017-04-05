@@ -1,0 +1,61 @@
+INTRODUCTION
+0A: Jester: 
+My name is Jester Wittaker, and I tell bad - mostly Chuck Norris - jokes.
+I was programmed by William Menten-Weil. If I offend you in any way, contact him at wtmenten@uw.edu
+Tell me what type of jokes you like? Or, simply ask for 'a joke'. Also, feel free to ask for 'help'.
+I know random, explicit, dev, movie, food, celebrity, science, political, sport, religion, animal, music, history, travel, career, money and fashion jokes.
+
+INTRODUCTION
+0B: Crazy Joe: 
+Good evening ladies and gentlemen, how are you doing tonight?
+Good? Good. I'm Crazy Joe Devola, I used to write for acclaimed sitcom 'Seinfeld.' 
+I have a hard time differentiating between myself and my characters so WATCH OUT.
+I can only respond in 'Seinfeld' quotes, so bear with me.
+If anything I say or do offends you, too bad!...Although you could try contacting
+my creator Graham Kelly at grahamtk@uw.edu.
+What do you want to hear, quotes? Do you have a favorite episode? A favorite character?
+You can read my manual too if you need direction. (type 'help')
+
+USING DEFAULT RESPONSE: THROWS JOKE FROM RANDOM CATEGORY
+1A: Jester: Chuck Norris does not follow fashion trends, they follow him. But then he turns around and kicks their ass. Nobody follows Chuck Norris.
+
+USING DEFAULT RESPONSE: RESPONDING TO "FOLLOW HIM" IN THIS CASE
+1B: Crazy Joe: Newman: Hey, we can't follow him, we're going north to Michigan.
+
+2A: Jester: Chuck Norris once rode a bull, and nine months later it had a calf.
+
+2B: Crazy Joe: George: I had a feeling you would like it. No, don't try it on now, try it on later.
+
+3A: Jester: Chuck Norris knows the last digit of PI.
+
+3B: Crazy Joe: Jerry: I was audited last year. At first I thought well, IRS kinda sounds like Toys R Us maybe won't be so bad. Maybe they have a sense of fun about it, you know. But it's it's bad. It's an ordeal. And they don't do anything to keep your spirits up through the ordeal. I think they should take all your receipts and put them in one of those big Lucite sweepstake drums and just kinda crank it around there. You know give me a feeling like you might win something. You know what I mean? Then they can pull them out one by one and go 'Oh, I'm sorry that's another illegal deduction. But we do have some lovely parting gifts for you. Jail!'
+
+USING MEMORY/SAVE FEATURE: RESPONDED TO "KEEP"
+4A: Jester: Alright, I'll remember that one.
+
+4B: Crazy Joe: George: You wanna see?! (pulling off the hat to reveal the bald pate) There! There it is! (turning to Newman) Alright, here! You wanna try on the hat?! Here! Try on the hat!
+
+5A: Jester: A high tide means Chuck Norris is flying over your coast. The tide is caused by God pissing his pants.
+
+5B: Crazy Joe: Kramer: Well, I've uh, I've changed my mind. I think I'm going to build a rollercoaster instead.
+
+6A: Jester: Chuck Norris is the reason for JAL flight 123
+
+6B: Crazy Joe: George: What, is that the one your parents gave you?
+
+USING SENTIMENT PROCESSING: RESPONDED TO "ONE" RETURNED NEUTRAL
+7A: Jester: Thanks
+
+7B: Crazy Joe: Elaine: Oh, Okay... well thanks a lot... sorry again about you and the Drake...
+
+8A: Jester: Trying to get the drop on Chuck Norris is like trying to put toothpaste back in the tube.
+
+8B: Crazy Joe: Bryant: You're all kinda, (Waves his hands around) kinda 'puffed up'. (Chuckles)
+
+9A: Jester: The US did not boycott the 1980 Summer Olympics in Moscow due to political reasons: Chuck Norris killed the entire US team with a single round-house kick during TaeKwonDo practice.
+
+9B: Crazy Joe: Jerry:  So she kicked him out of the apartment.
+
+10A: Jester: Chuck Norris went to the white house and crapped and pissed on President Barack Obama's desk, just because he is Chuck Norris.
+
+10B: Crazy Joe: Kramer: No, no, no, it's o.k. I don't care about the keys. It's my fault. I gave the keys away with my stupidity. I broke 'the covenant of the keys.'

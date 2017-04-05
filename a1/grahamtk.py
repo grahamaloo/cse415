@@ -56,7 +56,7 @@ stop_words = {"a", "about", "above," "after", "again", "against", "all", "am", "
               "why's", "with", "won't", "would", "wouldn't", "you", "you'd", "you'll", "you're", "you've", "your",
               "yours", "yourself", "yourselves"}
 
-sw_pattern = compile(r'\b(' + r'|'.join(stop_words) + r')\b\s*') #maybe superfluous
+# sw_pattern = compile(r'\b(' + r'|'.join(stop_words) + r')\b\s*') #maybe superfluous
 
 def remove_punctuation(text):
     '''Returns a string without any punctuation.'''
@@ -124,8 +124,7 @@ class CrazyJoe(object):
         return -1
     
     def introduce(self):
-        return '''
-Good evening ladies and gentlemen, how are you doing tonight?
+        return '''Good evening ladies and gentlemen, how are you doing tonight?
 Good? Good. I'm Crazy Joe Devola, I used to write for acclaimed sitcom 'Seinfeld.' 
 I have a hard time differentiating between myself and my characters so WATCH OUT.
 I can only respond in 'Seinfeld' quotes, so bear with me.
@@ -179,7 +178,7 @@ You can read my manual too if you need direction. (type 'help')'''
                     return 'Lawrence Gene "Larry" David (born July 2, 1947) is an American comedian, writer, actor, playwright, and television producer. He and Jerry Seinfeld created the television series Seinfeld, where he served as its head writer and executive producer from 1989 to 1996. David has subsequently gained further recognition for the HBO series Curb Your Enthusiasm, which he also created, in which he stars as a semi-fictionalized version of himself. He is worth an estimated $900 million US dollars. David\'s work won him a Primetime Emmy Award for Outstanding Comedy Series in 1993. Formerly a stand-up comedian, David went into television comedy, writing and starring in ABC\'s Fridays, as well as writing briefly for Saturday Night Live. He has won two Primetime Emmy Awards, and was voted by fellow comedians and comedy insiders as the 23rd greatest comedy star ever in a 2004 British poll to select "The Comedian\'s Comedian."'
                 else:
                     return 'I already told you about him!'
-                    
+
         if 'opera' in sub_wordlist: #rule 6: opera house
             self.fave_char = self.seinfeld.speaker(name='Devola')
             self.fave_ep = self.seinfeld.episode(id=self.eps['the opera'])
@@ -297,6 +296,8 @@ You can read my manual too if you need direction. (type 'help')'''
             return self._get_good_quote()
 
     def _get_good_quote(self, subject=None, episode=None):
+        '''returns a good quote, spoken by the favorite character (if set) 
+        from the passed ep (if set) and on the passed subject (if set)'''
         q = None
         qtext = ''
         while len(split(' ', qtext)) < 8:
@@ -313,6 +314,7 @@ You can read my manual too if you need direction. (type 'help')'''
         return q.speaker.name.strip() + ': ' + qtext
 
     def _get_random_quote(self, subject=None):
+        '''returns a random quote, on the passed subject (if set)'''
         q = None
         qtext = ''
         while len(split(' ', qtext)) < 8:
@@ -324,4 +326,5 @@ You can read my manual too if you need direction. (type 'help')'''
         return q.speaker.name.strip() + ': ' + qtext
 
     def agentName(self):
+        '''returns agent name'''
         return self.agent_name
