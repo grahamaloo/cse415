@@ -1,0 +1,25 @@
+Graham Kelly
+CSE 415, A2 Part I
+4/12/2017
+
+3.
+
+(b) parrots \subset birds. Reformulation: parrots are birds.
+(c) Polly \in parrots. Reformulation: not necessary.
+(d) David Jones \in Jones’. Reformulation: Also pretty straightforward.
+(e) George Washington \in great names. Reformulation: N/A
+(f) artificial intelligence \in states of mind. Reformulation: artificial intelligence is but one of many states of mind. I think this one is somewhat ambiguous (though I clearly thought it more an element than a subset of ‘states of mind’) due to ‘intelligence’ being a mass noun. This means it could refer to all artificial intelligences or simply the concept itself. The tiebreaker, for me, was the fact that ‘state’ was singular in this sentence, implying that artificial intelligence was but one of many possible states of mind and thus singular itself. While it does make sense to say that HAL is an artificial intelligence under normal English, with the understanding that artificial intelligence is a state of mind, it is somewhat nonsensical to assert that HAL is an artificial intelligence, because he (it) is not also a state of mind, indicating that artificial intelligence here refers to something broader and intangible, yet irreducible (due to singularity of ‘state’). This line of reasoning solidified, in my mind, the answer given above. A clearer example to illustrate: good feelings are states of mind (clearly subset-of relation); happiness is a good feeling (element-of good feelings, and thus a single state of mind as well); depression is a state of mind (clearly also a element-of relation).
+
+4.
+
+(a) reflexive, symmetric (vacuously), antisymmetric (vacuously), and transitive (vacuously). partial order b/c all three conditions satisfied.
+
+(b) transitive, and antisymmetric, thus NOT partial order b/c NO reflexivity.
+
+(c) transitive, reflexive, and antisymmetric, thus partial order.
+
+(d) antisymmetry. NOT partial order b/c NO reflexivity and NO transitivity.
+
+(e) reflexive (vacuously), symmetric (vacuously), antisymmetric (vacuously), transitive (vacuously) and thus a partial order.
+
+Question: For all those above deemed partial orders, would they not also be complete orders by construction, as they are relations on the set S containing only elements from the relation? Whats the significance of a total order v.s. a partial order in this class?
