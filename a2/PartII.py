@@ -54,7 +54,7 @@ def get_isa_list(category1):
         return []
     
 def get_includes_list(category1):
-    'Retrieves any existing list of things that CATEGORY1 includes'
+    '''Retrieves any existing list of things that CATEGORY1 includes'''
     try:
         c1list = INCLUDES[category1]
         return c1list
@@ -82,11 +82,11 @@ def isa_test(category1, category2, depth_limit = 10, verbose = False):
     return False
 
 def store_article(noun, article):
-    'Saves the article (in lower-case) associated with a noun.'
+    '''Saves the article (in lower-case) associated with a noun.'''
     ARTICLES[noun] = article.lower()
 
 def get_article(noun):
-    'Returns the article associated with the noun, or if none, the empty string.'
+    '''Returns the article associated with the noun, or if none, the empty string.'''
     try:
         article = ARTICLES[noun]
         return article
@@ -94,7 +94,7 @@ def get_article(noun):
         return ''
 
 def linneus():
-    'The main loop; it gets and processes user input, until "bye".'
+    '''The main loop; it gets and processes user input, until "bye".'''
     print('This is Linneus.  Please tell me "ISA" facts and ask questions.')
     print('For example, you could tell me "An ant is an insect."')
     while True :
@@ -122,6 +122,7 @@ def process(info) :
             store_article(items[3], items[2])
             store_isa_fact(items[1], items[3])
             print("I understand.")
+        handle_redundancies()
         return
     result_match_object = query_pattern.match(info)
     if result_match_object != None:
@@ -164,8 +165,42 @@ def process(info) :
     print("I do not understand.  You entered: ")
     print(info)
 
+def handle_redundancies():
+    redundant = trans_check()
+    l = len(redundant)
+    if DEBUG: print(redundant)
+    
+    if l == 1:
+        r = redundant[0]
+        get_isa_list(r[0]).remove(r[1])
+        print('Your earlier statement that %s %s is %s %s is now redundant.' % (get_article(r[0]), r[0], get_article(r[1]), r[1]))
+    elif l > 1:
+        print('The following statements you made earlier are now all redundant:', end='')
+        for i, r in enumerate(redundant):
+            get_isa_list(r[0]).remove(r[1])
+            print('\n%s %s is %s %s%s' % (get_article(r[0]), r[0], get_article(r[1]), r[1], ';' if i < l-1 else ''), end='')
+        print('.')
+
+def trans_check():
+    redundant = []
+    for k in ISA:
+        _trace_path(get_isa_list(k), redundant, [k])
+    return redundant
+
+def _trace_path(x, redundant, considered):
+    for i in x:
+        if i == considered[0]:
+            cycle_fix()
+        if i in considered:
+            redundant.append((considered[0],i))
+        _trace_path(get_isa_list(i), redundant, considered + x)
+
+def cycle_fix(i, path):
+    pass
+
 def answer_why(x, y):
-    'Handles the answering of a Why question.'
+    '''Handles the answering of a Why question.'''
+    print(find_chain(x, y))
     if x == y:
         print("Because they are identical.")
         return
