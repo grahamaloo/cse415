@@ -7,7 +7,7 @@ Assignment 2 Part II.  ISA Hierarchy Manipulation
 Status of the implementation of new features:
 
 All forms of redundancy detection and processing are working.
- Extra credit (Cycle detection and processing) implemented and working.
+# Extra credit (Cycle detection and processing) implemented and working.
 '''
 
 # Linneus3.py
@@ -29,7 +29,6 @@ from re import *   # Loads the regular expression module.
 ISA = {}
 INCLUDES = {}
 ARTICLES = {}
-SYN = {} #synonyms 
 DEBUG = True #TODO: change for prod.
 
 def store_isa_fact(category1, category2):
@@ -104,12 +103,11 @@ def linneus():
             return 'Goodbye now!'
         elif DEBUG and info == 'printtree': #useful for debugging
             print(ISA)
-            print(INCLUDES)
         elif DEBUG and info == 'clear': #useful for debugging
-            ISA.clear()
-            INCLUDES.clear()
-            ARTICLES .clear()
-            SYN.clear()
+            ISA = {}
+            INCLUDES = {}
+            ARTICLES = {}
+            SYN = {}
         else:
             process(info)
 
@@ -124,33 +122,17 @@ def process(info) :
     result_match_object = assertion_pattern.match(info)
     if result_match_object != None:
         items = result_match_object.groups()
-        store_article(items[1], items[0])
-        store_article(items[3], items[2])
-        
-        x = items[1]
-        y = items[3]
-        if x in SYN:
-            x = SYN[x]
-        if y in SYN:
-            y = SYN[y]
-        
-        if not isa_test(x, y, verbose = True):
-            store_isa_fact(x, y)
+        if not isa_test(items[1], items[3], verbose = True):
+            store_article(items[1], items[0])
+            store_article(items[3], items[2])
+            store_isa_fact(items[1], items[3])
             print("I understand.")
         handle_redundancies()
         return
     result_match_object = query_pattern.match(info)
     if result_match_object != None:
         items = result_match_object.groups()
-
-        x = items[1]
-        y = items[3]
-        if x in SYN:
-            x = SYN[x]
-        if y in SYN:
-            y = SYN[y]
-        
-        answer = isa_test(x, y)
+        answer = isa_test(items[1], items[3])
         if answer :
             print("Yes, it is.")
         else :
@@ -180,11 +162,7 @@ def process(info) :
     result_match_object = why_pattern.match(info)
     if result_match_object != None :
         items = result_match_object.groups()
-
-        y = items[3]
-        if y in SYN:
-            y = SYN[y]
-        if not isa_test(items[1], y):
+        if not isa_test(items[1], items[3]) :
             print("But that's not true, as far as I know!")
         else:
             answer_why(items[1], items[3])
@@ -213,56 +191,27 @@ def redundancy_check():
     '''checks for redundancies'''
     redundant = []
     for k in ISA:
-        if _trace_path(get_isa_list(k), redundant, [k], k) < 0: break
+        _trace_path(get_isa_list(k), redundant, [k])
     return redundant
 
-def _trace_path(x, redundant, considered, prev):
+def _trace_path(x, redundant, considered):
     '''traces the path from leaves to respective root looking for redundancies (transitive or cycle)'''
-    if considered[0] in x:
-        cycle_fix(considered[0], prev)
-        del redundant[:]
-        return -1
     for i in x:
+        if i == considered[0]:
+            cycle_fix()
+            del redundant[:]
+            return
         if i in considered:
             redundant.append((considered[0],i))
-        return _trace_path(get_isa_list(i), redundant, considered + x, i)
-    return 1
+        _trace_path(get_isa_list(i), redundant, considered + [i])
 
-def cycle_fix(x, z):
+def cycle_fix(i, path):
     '''fixes cycles that are identified and spelled out in path'''
-    flat = [item for sublist in find_chain(x, z) for item in sublist]
-    flat = set(flat)
-    flat.remove(contender)
-
-    contender = x
-    new_isa = set(get_isa_list(x))
-    new_includes = set(get_includes_list(x))
-
-    for e in flat:
-        new_isa.update(get_isa_list(e))
-        new_includes.update(get_includes_list(e))
-        add_syn(e, contender)
-        del ISA[e]
-        del INCLUDES[e]
-    
-    new_isa.discard(contender)
-    new_includes.discard(contender)
-    ISA[contender] = list(new_isa)
-    INCLUDES[contender] = list(new_includes)
-    
-    for k in ISA:
-        if k != contender: ISA[k] = list({x if x not in flat else contender for x in get_isa_list(k)})
-    for k in INCLUDES:
-        if k != contender: INCLUDES[k] = list({x if x not in flat else contender for x in get_includes_list(k)})
-
-    out = 'I infer that ' + ', '.join(flat)
-    out += ', and %s are all names for the same thing, and I\'ll call it %s.' % (contender, contender)
-    print(out)
-
+    pass
 
 def answer_why(x, y):
     '''Handles the answering of a Why question.'''
-    # print(find_chain(x, y))
+    print(find_chain(x, y))
     if x == y:
         print("Because they are identical.")
         return
@@ -275,22 +224,12 @@ def answer_why(x, y):
 from functools import reduce
 def report_chain(x, y):
     '''Returns a phrase that describes a chain of facts.'''
-    orig = y
-    if orig in SYN:
-        y = SYN[y]
     chain = find_chain(x, y)
     all_but_last = chain[0:-1]
     last_link = chain[-1]
-    if len(chain) == 1:
-        main_phrase = reduce(lambda x, y: x + y, map(report_link, chain))
-        last_phrase = ''
-    else:
-        main_phrase = reduce(lambda x, y: x + y, map(report_link, all_but_last))
-        last_phrase = "and " + report_link(last_link)
-    if orig in SYN:
-        new_last_phrase = last_phrase + 'and %s is another name for %s.' % (orig, y)
-    else:
-        new_last_phrase = last_phrase[0:-2] + '.'
+    main_phrase = reduce(lambda x, y: x + y, map(report_link, all_but_last))
+    last_phrase = "and " + report_link(last_link)
+    new_last_phrase = last_phrase[0:-2] + '.'
     return main_phrase + new_last_phrase
 
 def report_link(link):
@@ -311,13 +250,6 @@ def find_chain(x, z):
                 temp = find_chain(y, z)
                 temp.insert(0, [x,y])
                 return temp
-
-def add_syn(syn, contender):
-    # loop when synonym previously referenced in cycle.
-    for k, v in SYN.items():
-        if v == syn:
-            SYN[k] = contender
-    SYN[syn] = contender
 
 def test() :
     process("A turtle is a reptile.")
