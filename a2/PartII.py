@@ -30,7 +30,7 @@ ISA = {}
 INCLUDES = {}
 ARTICLES = {}
 SYN = {} #synonyms 
-DEBUG = True #TODO: change for prod.
+DEBUG = False #TODO: change for prod.
 
 def store_isa_fact(category1, category2):
     '''Stores one fact of the form A BIRD IS AN ANIMAL'''
@@ -67,7 +67,7 @@ def isa_test1(category1, category2):
     c1list = get_isa_list(category1)
     return c1list.__contains__(category2)
     
-def isa_test(category1, category2, depth_limit = 10, verbose = False):
+def isa_test(category1, category2, depth_limit = 20, verbose = False):
     '''Returns True if category 1 is a subset of category 2 within depth_limit levels'''
     if category1 == category2:
         if verbose: print('You don\'t have to tell me that.')
@@ -134,10 +134,20 @@ def process(info) :
         if y in SYN:
             y = SYN[y]
         
-        if not isa_test(x, y, verbose = True):
-            store_isa_fact(x, y)
-            print("I understand.")
-        handle_redundancies()
+        if x == y:
+            print('You don\'t have to tell me that.')
+        else:
+            special_case = False
+            
+            if not isa_test(x, y, verbose = True):
+                store_isa_fact(x, y)
+            if isa_test(y, x):
+                cycle_fix(y, x)
+                special_case = True
+            elif handle_redundancies(y, x):
+                special_case = True
+
+            if not special_case: print("I understand.")
         return
     result_match_object = query_pattern.match(info)
     if result_match_object != None:
@@ -192,9 +202,9 @@ def process(info) :
     print("I do not understand.  You entered: ")
     print(info)
 
-def handle_redundancies():
+def handle_redundancies(y, x):
     '''checks for transitive redundancies and cycles. fixes these and reports to user'''
-    redundant = redundancy_check()
+    redundant = redundancy_check(y, x)
     l = len(redundant)
     if DEBUG: print(redundant)
     
@@ -208,33 +218,30 @@ def handle_redundancies():
             get_isa_list(r[0]).remove(r[1])
             print('\n%s %s is %s %s%s' % (get_article(r[0]), r[0], get_article(r[1]), r[1], ';' if i < l-1 else ''), end='')
         print('.')
+    return redundant
 
-def redundancy_check():
+def redundancy_check(y, x):
     '''checks for redundancies'''
     redundant = []
     for k in ISA:
-        if _trace_path(get_isa_list(k), redundant, [k], k) < 0: break
+        _trace_path(get_isa_list(k), redundant, [k], k)
     return redundant
 
 def _trace_path(x, redundant, considered, prev):
     '''traces the path from leaves to respective root looking for redundancies (transitive or cycle)'''
-    if considered[0] in x:
-        cycle_fix(considered[0], prev)
-        del redundant[:]
-        return -1
     for i in x:
         if i in considered:
             redundant.append((considered[0],i))
-        return _trace_path(get_isa_list(i), redundant, considered + x, i)
-    return 1
+        _trace_path(get_isa_list(i), redundant, considered + x, i)
 
 def cycle_fix(x, z):
     '''fixes cycles that are identified and spelled out in path'''
     flat = [item for sublist in find_chain(x, z) for item in sublist]
     flat = set(flat)
-    flat.remove(contender)
 
     contender = x
+    flat.remove(contender)
+
     new_isa = set(get_isa_list(x))
     new_includes = set(get_includes_list(x))
 
@@ -313,7 +320,7 @@ def find_chain(x, z):
                 return temp
 
 def add_syn(syn, contender):
-    # loop when synonym previously referenced in cycle.
+    # loop for when synonym previously referenced in cycle.
     for k, v in SYN.items():
         if v == syn:
             SYN[k] = contender
@@ -325,6 +332,6 @@ def test() :
     process("A reptile is an animal.")
     process("An animal is a thing.")
 
-test()
+# test()
 linneus()
 
