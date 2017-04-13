@@ -30,7 +30,7 @@ ISA = {}
 INCLUDES = {}
 ARTICLES = {}
 SYN = {} #synonyms 
-DEBUG = False #TODO: change for prod.
+DEBUG = True #TODO: change for prod.
 
 def store_isa_fact(category1, category2):
     '''Stores one fact of the form A BIRD IS AN ANIMAL'''
@@ -169,6 +169,10 @@ def process(info) :
     result_match_object = what_pattern.match(info)
     if result_match_object != None :
         items = result_match_object.groups()
+        if items[1] in SYN:
+            a1 = get_article(SYN[items[1]])
+            print(items[1].capitalize() + ' is another name for ' + a1 + ' ' + SYN[items[1]])
+            return
         supersets = get_isa_list(items[1])
         if supersets != [] :
             first = supersets[0]
@@ -246,14 +250,19 @@ def cycle_fix(x, z):
     new_includes = set(get_includes_list(x))
 
     for e in flat:
-        new_isa.update(get_isa_list(e))
-        new_includes.update(get_includes_list(e))
-        add_syn(e, contender)
-        del ISA[e]
-        del INCLUDES[e]
+        if e != contender:
+            new_isa.update(get_isa_list(e))
+            new_includes.update(get_includes_list(e))
+            add_syn(e, contender)
+            del ISA[e]
+            del INCLUDES[e]
     
     new_isa.discard(contender)
     new_includes.discard(contender)
+    for e in flat:
+        new_isa.discard(e)
+        new_includes.discard(e)
+
     ISA[contender] = list(new_isa)
     INCLUDES[contender] = list(new_includes)
     
