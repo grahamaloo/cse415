@@ -1,3 +1,6 @@
+'''Graham Kelly (grahamtk)
+CSE 415 Assignment 3: Part II
+'''
 # ItrDFS.py
 # Ver 0.3, April 11, 2017.
 # Iterative Depth-First Search of a problem space.
@@ -11,7 +14,7 @@
 import sys
 
 if sys.argv==[''] or len(sys.argv)<2:
-  # import EightPuzzle as Problem
+  # import BasicEightPuzzle as Problem
   import TowerOfHanoi as Problem
 else:
   import importlib

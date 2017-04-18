@@ -1,3 +1,6 @@
+'''Graham Kelly (grahamtk)
+CSE 415 Assignment 3: Part II
+'''
 # Astar.py, April 2017 
 # Based on ItrDFS.py, Ver 0.3, April 11, 2017.
 
@@ -11,17 +14,16 @@
 
 import sys
 from queue import PriorityQueue
+from itertools import count
 
 # DO NOT CHANGE THIS SECTION 
 if sys.argv==[''] or len(sys.argv)<2:
     import EightPuzzleWithHeuristics as Problem
-    heuristics = lambda s: Problem.HEURISTICS['h_manhattan'](s)
-    
+    heuristics = lambda s: Problem.HEURISTICS['h_hamming'](s)  
 else:
     import importlib
     Problem = importlib.import_module(sys.argv[1])
     heuristics = lambda s: Problem.HEURISTICS[sys.argv[2]](s)
-
 
 print("\nWelcome to AStar")
 COUNT = None
@@ -49,13 +51,19 @@ def AStar(initial_state):
     # add any auxiliary data structures as needed
     OPEN = PriorityQueue()
     CLOSED = []
-    OPEN.put((0, initial_state))
+    counter = count()
+    OPEN.put((0, next(counter), initial_state))
+    BACKLINKS[initial_state] = -1
     
     
     while not OPEN.empty():
         S = OPEN.get()
+        p = S[0]
+        S = S[2]
         while S in CLOSED:
             S = OPEN.get()
+            p = S[0]
+            S = S[2]
         CLOSED.append(S)
         
         # DO NOT CHANGE THIS SECTION: begining 
@@ -66,8 +74,17 @@ def AStar(initial_state):
         # DO NOT CHANGE THIS SECTION: end
 
         # TODO: finish A* implementation
-
-
+        COUNT += 1
+        for op in Problem.OPERATORS:
+            # Optionally uncomment the following when debugging
+            # a new problem formulation.
+            # print("Trying operator: "+op.name)
+            if op.precond(S):
+                new_state = op.state_transf(S)
+                if not new_state in CLOSED:
+                    BACKLINKS[new_state] = S
+                    OPEN.put((p + heuristics(new_state), next(counter), new_state))
+                
 # DO NOT CHANGE
 def backtrace(S):
     global BACKLINKS

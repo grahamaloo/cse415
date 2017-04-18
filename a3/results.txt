@@ -1,0 +1,21 @@
+Graham Kelly
+CSE 415 A3 : PartII Results
+
+problem | heuristic | state count | solved?
+--------------------------------------------
+10a     | hamming   | 79          | yes
+10a     | manhattan | 56          | yes
+10a     | euclidean | 55          | yes
+10a     | custom    | 54          | yes
+12a     | hamming   | 251         | yes
+12a     | manhattan | 144         | yes
+12a     | euclidean | 167         | yes
+12a     | custom    | 147         | yes
+14a     | hamming   | 657         | yes
+14a     | manhattan | 354         | yes
+14a     | euclidean | 355         | yes
+14a     | custom    | 365         | yes
+16a     | hamming   | 985         | yes
+16a     | manhattan | 443         | yes
+16a     | euclidean | 534         | yes
+16a     | custom    | 475         | yes

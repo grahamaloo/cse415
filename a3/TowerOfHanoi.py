@@ -1,3 +1,6 @@
+'''Graham Kelly (grahamtk)
+CSE 415 Assignment 3: Part II
+'''
 '''TowerOfHanoi.py
 A QUIET Solving Tool problem formulation.
 QUIET = Quetzal User Intelligence Enhancing Technology.

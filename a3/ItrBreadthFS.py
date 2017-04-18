@@ -1,3 +1,7 @@
+'''Graham Kelly (grahamtk)
+CSE 415 Assignment 3: Part II
+'''
+
 # ItrBreadthFS.py, Mar 2017 
 # Based on ItrDFS.py, Ver 0.3, April, 2017.
 
@@ -17,7 +21,6 @@ if sys.argv==[''] or len(sys.argv)<2:
 else:
     import importlib
     Problem = importlib.import_module(sys.argv[1])
-
 
 print("\nWelcome to ItrBFS")
 COUNT = None
@@ -74,8 +77,6 @@ def IterativeBFS(initial_state):
                     #print(new_state)
 
         OPEN = OPEN + L  
-
-
 
 # returns a list of states
 # DO NOT CHANGE

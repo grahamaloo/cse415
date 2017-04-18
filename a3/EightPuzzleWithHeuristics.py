@@ -1,7 +1,7 @@
 '''Graham Kelly (grahamtk)
 CSE 415 Assignment 3: Part II
 '''
-'''BasicEightPuzzle.py
+'''EightPuzzleWithHeuristics.py
 A QUIET Solving Tool problem formulation.
 QUIET = Quetzal User Intelligence Enhancing Technology.
 The XML-like tags used here serve to identify key sections of this 
@@ -14,7 +14,7 @@ case or camel case.
 '''
 #<METADATA>
 QUIET_VERSION = "0.2"
-PROBLEM_NAME = "Basic Eight Puzzle"
+PROBLEM_NAME = "Eight Puzzle w/ Heuristics"
 PROBLEM_VERSION = "0.1"
 PROBLEM_AUTHORS = ['Graham Kelly']
 PROBLEM_CREATION_DATE = "19-APR-2017"
@@ -22,6 +22,7 @@ PROBLEM_DESC=\
 '''This formulation of the Basic Eight problem uses generic
 Python 3 constructs and has been tested with Python 3.6.
 It is designed to work according to the QUIET tools interface, Version 0.2.
+Includes heuristics to facilitate A* search.
 '''
 #</METADATA>
 
@@ -31,14 +32,14 @@ def can_move(s,From,To):
     from the From place to the To slot.'''
     try:
         possible = Final_state
-        if From == To : return False
-        if s.d[From] == 0 or s.d[To] != 0: return False
-        if From not in possible or To not in possible: return False
-        dx = abs(get_x(From) - get_x(To))
-        dy = abs(get_y(From) - get_y(To))
-        if dx == 1 and dy == 0: return True
-        if dy == 1 and dx == 0: return True
-        return False # 
+        if From == To : return False # can't move tile from current space to current space.
+        if s.d[From] == 0 or s.d[To] != 0: return False # have to move tile from occupied space to empty one (zero = empty).
+        if From not in possible or To not in possible: return False # indices have to be valid.
+        dx = abs(get_x(From) - get_x(To)) # delta x
+        dy = abs(get_y(From) - get_y(To)) # delta y
+        if dx == 1 and dy == 0: return True # adjacent row, same col
+        if dy == 1 and dx == 0: return True # adjacent col, same row
+        return False # all other possibilities = not movable
     except (Exception) as e:
         print(e)
 
@@ -78,10 +79,44 @@ class Operator:
 
     def apply(self, s):
         return self.state_transf(s)
+
+def h_hamming(state):
+    '''Counts the number of tiles out of place'''
+    count = 0
+    for a, t in zip(state.d, Final_state):
+        if a != t:
+            count += 1
+    return count
+
+from math import sqrt
+def h_euclidean(state):
+    '''calculates the euclidean distance from each out
+    of place tile to its goal position.'''
+    distance = 0
+    for coord, val in enumerate(state.d):
+        coord_ideal = Final_state.index(val)
+        distance += sqrt( (get_x(coord) - get_x(coord_ideal))**2 + (get_y(coord) - get_y(coord_ideal))**2 )
+    return distance
+
+def h_manhattan(state):
+    '''calculates the manhattan distance from each out
+    of place tile to its goal position.'''
+    distance = 0
+    for coord, val in enumerate(state.d):
+        coord_ideal = Final_state.index(val)
+        distance += abs(get_x(coord) - get_x(coord_ideal)) + abs(get_y(coord) - get_y(coord_ideal))
+    return distance
+
+def h_custom(state):
+    '''calculates the weighted avg. distance from each out
+    of place tile to its goal position. (using other heuristics)'''
+    distance = 0
+    distance += h_hamming(state) + 4 * h_manhattan(state) + 2 * h_euclidean(state)
+    return distance / 7
 #</COMMON_CODE>
 
 #<COMMON_DATA>
-Final_state = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+Final_state = [0, 1, 2, 3, 4, 5, 6, 7, 8] # goal state
 #</COMMON_DATA>
 
 #<STATE>
@@ -114,7 +149,6 @@ class State():
 #</STATE>
 
 #<INITIAL_STATE>
-#<INITIAL_STATE>
 # puzzle0:
 # INITIAL_STATE = State([1, 0, 2, 3, 4, 5, 6, 7, 8])
 # puzzle1a:
@@ -124,13 +158,13 @@ class State():
 # # puzzle4a:
 # INITIAL_STATE = State([1, 4, 2, 3, 7, 0, 6, 8, 5])
 # puzzle10a.py:
-INITIAL_STATE = State([4, 5, 0, 1, 2, 3, 6, 7, 8])
+# INITIAL_STATE = State([4, 5, 0, 1, 2, 3, 6, 7, 8])
 # puzzle12a.py:
 # INITIAL_STATE = State([3, 1, 2, 6, 8, 7, 5, 4, 0])
 # puzzle14a.py:
 # INITIAL_STATE = State([4, 5, 0, 1, 2, 8, 3, 7, 6])
 # puzzle16a.py:
-# INITIAL_STATE = State([0, 8, 2, 1, 7, 4, 3, 6, 5])
+INITIAL_STATE = State([0, 8, 2, 1, 7, 4, 3, 6, 5])
 
 CREATE_INITIAL_STATE = lambda: INITIAL_STATE
 #</INITIAL_STATE>
@@ -156,4 +190,5 @@ GOAL_MESSAGE_FUNCTION = lambda s: goal_message(s)
 #</GOAL_MESSAGE_FUNCTION>
 
 #<HEURISTICS> (optional)
+HEURISTICS = {'h_hamming': h_hamming, 'h_euclidean': h_euclidean, 'h_manhattan' : h_manhattan, 'h_custom': h_custom}
 #</HEURISTICS>
