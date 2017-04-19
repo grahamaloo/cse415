@@ -6,4 +6,4 @@ CSE 415 Assignment 3 Part I
 
 2. Applying the same logic, we arrive at: 27C2 * 25C2 * 23C2 = 26,640,900.
 
-3. 1/8(2^(4*k^2)+2*2^(k^2)+3*2^(2k^2)+2*2^(k(2k+1))) is the formula for 2k * 2k boards (i.e. any even-dimension board).
+3. 1/8(2^(4*k^2)+2*2^(k^2)+3*2^(2k^2)+2*2^(k(2k+1))) is the formula for 2k * 2k boards (i.e. any even-dimension board). Derived using Burnside’s lemma.

@@ -17,13 +17,15 @@ from queue import PriorityQueue
 from itertools import count
 
 # DO NOT CHANGE THIS SECTION 
-if sys.argv==[''] or len(sys.argv)<2:
+if sys.argv==[''] or len(sys.argv) < 2:
     import EightPuzzleWithHeuristics as Problem
-    heuristics = lambda s: Problem.HEURISTICS['h_hamming'](s)  
+    heuristics = lambda s: Problem.HEURISTICS['h_manhattan'](s)
+    initial_state = Problem.CREATE_INITIAL_STATE()
 else:
     import importlib
     Problem = importlib.import_module(sys.argv[1])
     heuristics = lambda s: Problem.HEURISTICS[sys.argv[2]](s)
+    initial_state = Problem.State(importlib.import_module(sys.argv[3]).CREATE_INITIAL_STATE())
 
 print("\nWelcome to AStar")
 COUNT = None
@@ -57,6 +59,7 @@ def AStar(initial_state):
     
     
     while not OPEN.empty():
+        COUNT += 1
         S = OPEN.get()
         p = S[0]
         S = S[2]
@@ -74,7 +77,6 @@ def AStar(initial_state):
         # DO NOT CHANGE THIS SECTION: end
 
         # TODO: finish A* implementation
-        COUNT += 1
         for op in Problem.OPERATORS:
             # Optionally uncomment the following when debugging
             # a new problem formulation.

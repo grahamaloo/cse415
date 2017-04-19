@@ -16,8 +16,8 @@ CSE 415 Assignment 3: Part II
 import sys
 
 if sys.argv==[''] or len(sys.argv)<2:
-     import BasicEightPuzzle as Problem
-    # import TowerOfHanoi as Problem
+     # import EightPuzzle as Problem
+    import TowerOfHanoi as Problem
 else:
     import importlib
     Problem = importlib.import_module(sys.argv[1])

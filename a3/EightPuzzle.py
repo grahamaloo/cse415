@@ -1,7 +1,7 @@
 '''Graham Kelly (grahamtk)
 CSE 415 Assignment 3: Part II
 '''
-'''BasicEightPuzzle.py
+'''EightPuzzle.py
 A QUIET Solving Tool problem formulation.
 QUIET = Quetzal User Intelligence Enhancing Technology.
 The XML-like tags used here serve to identify key sections of this 
@@ -124,13 +124,13 @@ class State():
 # # puzzle4a:
 # INITIAL_STATE = State([1, 4, 2, 3, 7, 0, 6, 8, 5])
 # puzzle10a.py:
-INITIAL_STATE = State([4, 5, 0, 1, 2, 3, 6, 7, 8])
+# INITIAL_STATE = State([4, 5, 0, 1, 2, 3, 6, 7, 8])
 # puzzle12a.py:
 # INITIAL_STATE = State([3, 1, 2, 6, 8, 7, 5, 4, 0])
 # puzzle14a.py:
 # INITIAL_STATE = State([4, 5, 0, 1, 2, 8, 3, 7, 6])
 # puzzle16a.py:
-# INITIAL_STATE = State([0, 8, 2, 1, 7, 4, 3, 6, 5])
+INITIAL_STATE = State([0, 8, 2, 1, 7, 4, 3, 6, 5])
 
 CREATE_INITIAL_STATE = lambda: INITIAL_STATE
 #</INITIAL_STATE>

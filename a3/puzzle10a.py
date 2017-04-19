@@ -1,0 +1,1 @@
+CREATE_INITIAL_STATE = lambda: [4, 5, 0, 1, 2, 3, 6, 7, 8]
