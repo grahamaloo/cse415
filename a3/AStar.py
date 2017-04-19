@@ -16,7 +16,7 @@ import sys
 from queue import PriorityQueue
 from itertools import count
 
-# DO NOT CHANGE THIS SECTION 
+# DO NOT CHANGE THIS SECTION (had to for CL args)
 if sys.argv==[''] or len(sys.argv) < 2:
     import EightPuzzleWithHeuristics as Problem
     heuristics = lambda s: Problem.HEURISTICS['h_manhattan'](s)
@@ -31,10 +31,10 @@ print("\nWelcome to AStar")
 COUNT = None
 BACKLINKS = {}
 
-# DO NOT CHANGE THIS SECTION
+# DO NOT CHANGE THIS SECTION (had to for CL args)
 def runAStar():
     #initial_state = Problem.CREATE_INITIAL_STATE(keyVal)
-    initial_state = Problem.CREATE_INITIAL_STATE()
+    # initial_state = Problem.CREATE_INITIAL_STATE()
     print("Initial State:")
     print(initial_state)
     global COUNT, BACKLINKS
