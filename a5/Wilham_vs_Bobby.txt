@@ -1,0 +1,139 @@
+Baroque Chess Gamemaster v1.0-BETA
+The Gamemaster says, "Players, introduce yourselves."
+     (Playing WHITE:) I'm Wilham, I was created by William Menten-Weil (wtmenten) and Graham Kelly (grahamtk) to play in a Baroque Chess tournament.
+     (Playing BLACK:) I'm an android named Bobby.
+The Gamemaster says, "Let's Play!"
+The initial state is...
+c l i w k i l f 
+p p p p p p p p 
+- - - - - - - - 
+- - - - - - - - 
+- - - - - - - - 
+- - - - - - - - 
+P P P P P P P P 
+F L I W K I L C 
+WHITE's move
+
+Time used in makeMove: 22.0111 seconds out of  25
+Within the time limit -- nice!
+Turn 1: Move is by WHITE as Pincer from B7 to B3
+Wilham says: Your Move!
+c l i w k i l f 
+p p p p p p p p 
+- P - - - - - - 
+- - - - - - - - 
+- - - - - - - - 
+- - - - - - - - 
+P - P P P P P P 
+F L I W K I L C 
+BLACK's move
+
+Time used in makeMove: 24.9461 seconds out of  25
+Within the time limit -- nice!
+Turn 2: Move is by BLACK as I moved!
+Bobby F. says: Your turn!
+c l i w k i l f 
+p p p p - p p p 
+- P - - - - - - 
+- - - - p - - - 
+- - - - - - - - 
+- - - - - - - - 
+P - P P P P P P 
+F L I W K I L C 
+WHITE's move
+
+Time used in makeMove: 22.0115 seconds out of  25
+Within the time limit -- nice!
+Turn 3: Move is by WHITE as Leaper from B8 to B4
+Wilham says: Your Move!
+c l i w k i l f 
+p p p p - p p p 
+- P - - - - - - 
+- L - - p - - - 
+- - - - - - - - 
+- - - - - - - - 
+P - P P P P P P 
+F - I W K I L C 
+BLACK's move
+
+Time used in makeMove: 24.9405 seconds out of  25
+Within the time limit -- nice!
+Turn 4: Move is by BLACK as I moved!
+Bobby F. says: Your turn!
+c l i w k i l f 
+p p p p - p p p 
+- P - - p - - - 
+- L - - - - - - 
+- - - - - - - - 
+- - - - - - - - 
+P - P P P P P P 
+F - I W K I L C 
+WHITE's move
+
+Time used in makeMove: 22.0236 seconds out of  25
+Within the time limit -- nice!
+Turn 5: Move is by WHITE as Pincer from A7 to A4
+Wilham says: Your Move!
+c l i w k i l f 
+p p p p - p p p 
+- P - - p - - - 
+P L - - - - - - 
+- - - - - - - - 
+- - - - - - - - 
+- - P P P P P P 
+F - I W K I L C 
+BLACK's move
+
+Time used in makeMove: 24.9644 seconds out of  25
+Within the time limit -- nice!
+Turn 6: Move is by BLACK as I moved!
+Bobby F. says: Your turn!
+c l i w k i l f 
+p p p p - p p p 
+- P - - - - - - 
+P L - - - - - - 
+- - - - p - - - 
+- - - - - - - - 
+- - P P P P P P 
+F - I W K I L C 
+WHITE's move
+
+Time used in makeMove: 22.0187 seconds out of  25
+Within the time limit -- nice!
+Turn 7: Move is by WHITE as Pincer from C7 to C3
+Wilham says: Your Move!
+c l i w k i l f 
+p p p p - p p p 
+- P P - - - - - 
+P L - - - - - - 
+- - - - p - - - 
+- - - - - - - - 
+- - - P P P P P 
+F - I W K I L C 
+BLACK's move
+
+Time used in makeMove: 24.9884 seconds out of  25
+Within the time limit -- nice!
+Illegal move by BLACK as I moved!
+Returned state is:
+c l i w k - l f 
+p p p p - p p p 
+- P - - - - - - 
+P L i - - - - - 
+- - - - p - - - 
+- - - - - - - - 
+- - - P P P P P 
+F - I W K I L C 
+WHITE's move
+
+c l i w k i l f 
+p p p p - p p p 
+- P P - - - - - 
+P L - - - - - - 
+- - - - p - - - 
+- - - - - - - - 
+- - - P P P P P 
+F - I W K I L C 
+BLACK's move
+
+Game over.
