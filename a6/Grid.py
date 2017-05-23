@@ -94,6 +94,10 @@ def T(s, a, sp):
     if s=="DEAD": return 0
     if sp=="DEAD":
       if s==(3,2) or s==(3,1): return 1
+      else: return 0
+    if a=="End" and s==sp:
+      return 0
+    if s==(3,2) or s==(3,1) and a!= "End": return 0
     sx, sy = s
     spx, spy = sp
     if sx==spx and sy == spy-1:
@@ -124,6 +128,4 @@ def R(s, a, sp):
     if s=='DEAD': return 0
     if s==(3,2): return 1.0  # the Gem
     if s==(3,1): return -1.0 # the Pit
-    return -0.01   # cost of living.
-
-                  
+    return 0.0   # cost of living.
